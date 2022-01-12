@@ -8,9 +8,9 @@ springdoc:
 
 spring:
   datasource:
-    username: ""
-    password: ""
-    url: "jdbc:h2:./hexletBlog"
+    username: "sa"
+    password: "sa"
+    url: "jdbc:h2:./testDB"
 
   jpa:
     show-sql: true

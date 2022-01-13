@@ -37,7 +37,9 @@ public class UserController {
 //        return authenticationService.login(dto.getEmail(), dto.getPassword());
 //    }
 
-
+    /**
+     * @return all users
+     */
 //    // Content используется для укзания содержимого ответа
 //    @ApiResponses(@ApiResponse(responseCode = "200", content =
 //            // Указываем тип содержимого ответа

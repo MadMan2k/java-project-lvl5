@@ -16,6 +16,10 @@ public class UserServiceImpl implements UserService {
 
 //    private final PasswordEncoder passwordEncoder;
 
+    /**
+     * @param userDto
+     * @return
+     */
     @Override
     public User createNewUser(UserDto userDto) {
         final User user = new User();
@@ -30,6 +34,11 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+    /**
+     * @param id
+     * @param userDto
+     * @return
+     */
     @Override
     public User updateUser(long id, UserDto userDto) {
         final User userToUpdate = userRepository.findById(id).get();
@@ -40,6 +49,9 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(userToUpdate);
     }
 
+    /**
+     * @return
+     */
     @Override
     public String getCurrentUserName() {
         // TEMP, FOR DELETE ASAP
@@ -48,6 +60,9 @@ public class UserServiceImpl implements UserService {
 //        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 
+    /**
+     * @return
+     */
     @Override
     public User getCurrentUser() {
         return userRepository.findByEmail(getCurrentUserName()).get();

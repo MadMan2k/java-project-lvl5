@@ -1,0 +1,55 @@
+package hexlet.code.app.service;
+
+import hexlet.code.app.dto.UserDto;
+import hexlet.code.app.entity.User;
+import hexlet.code.app.repository.UserRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@Transactional
+@AllArgsConstructor
+public class UserServiceImpl implements UserService {
+
+    private final UserRepository userRepository;
+
+//    private final PasswordEncoder passwordEncoder;
+
+    @Override
+    public User createNewUser(UserDto userDto) {
+        final User user = new User();
+        user.setEmail(userDto.getEmail());
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+
+        // TEMP, FOR DELETE ASAP
+        user.setPassword(userDto.getPassword());
+
+//        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User updateUser(long id, UserDto userDto) {
+        final User userToUpdate = userRepository.findById(id).get();
+        userToUpdate.setEmail(userDto.getEmail());
+        userToUpdate.setFirstName(userDto.getFirstName());
+        userToUpdate.setLastName(userDto.getLastName());
+//        userToUpdate.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        return userRepository.save(userToUpdate);
+    }
+
+    @Override
+    public String getCurrentUserName() {
+        // TEMP, FOR DELETE ASAP
+        return null;
+
+//        return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
+
+    @Override
+    public User getCurrentUser() {
+        return userRepository.findByEmail(getCurrentUserName()).get();
+    }
+}

@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
 
-        // TEMP, FOR DELETE ASAP
+        // TEMP, FOR DELETE ASAP TODO
         user.setPassword(userDto.getPassword());
 
 //        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public String getCurrentUserName() {
-        // TEMP, FOR DELETE ASAP
+        // TEMP, FOR DELETE ASAP TODO
         return null;
 
 //        return SecurityContextHolder.getContext().getAuthentication().getName();

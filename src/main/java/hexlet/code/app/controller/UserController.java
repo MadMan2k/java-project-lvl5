@@ -34,7 +34,10 @@ public class UserController {
     private final UserRepository userRepository;
 //    private final UserAuthenticationService authenticationService;
 
-
+    /**
+     * @param dto UserDTO
+     * @return registered user
+     */
 //    @Operation(summary = "Create new user")
 //    @ApiResponse(responseCode = "201", description = "User created")
     @PostMapping
@@ -62,18 +65,30 @@ public class UserController {
                 .toList();
     }
 
+    /**
+     * @param id
+     * @return searched User
+     */
 //    @ApiResponses(@ApiResponse(responseCode = "200"))
     @GetMapping(ID)
     public User getUserById(@PathVariable final Long id) {
         return userRepository.findById(id).get();
     }
 
+    /**
+     * @param id
+     * @param dto
+     * @return updated User
+     */
     @PutMapping(ID)
 //    @PreAuthorize(ONLY_OWNER_BY_ID)
     public User update(@PathVariable final long id, @RequestBody @Valid final UserDto dto) {
         return userService.updateUser(id, dto);
     }
 
+    /**
+     * @param id
+     */
     @DeleteMapping(ID)
 //    @PreAuthorize(ONLY_OWNER_BY_ID)
     public void delete(@PathVariable final long id) {

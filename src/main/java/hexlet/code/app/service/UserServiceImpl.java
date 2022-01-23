@@ -4,6 +4,7 @@ import hexlet.code.app.dto.UserDto;
 import hexlet.code.app.entity.User;
 import hexlet.code.app.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,7 +15,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-//    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * @param userDto
@@ -26,11 +27,7 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userDto.getEmail());
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
-
-        // TEMP, FOR DELETE ASAP TODO
-        user.setPassword(userDto.getPassword());
-
-//        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         return userRepository.save(user);
     }
 
@@ -45,7 +42,7 @@ public class UserServiceImpl implements UserService {
         userToUpdate.setEmail(userDto.getEmail());
         userToUpdate.setFirstName(userDto.getFirstName());
         userToUpdate.setLastName(userDto.getLastName());
-//        userToUpdate.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        userToUpdate.setPassword(passwordEncoder.encode(userDto.getPassword()));
         return userRepository.save(userToUpdate);
     }
 

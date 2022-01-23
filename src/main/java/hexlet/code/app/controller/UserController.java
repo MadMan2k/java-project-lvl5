@@ -3,6 +3,7 @@ package hexlet.code.app.controller;
 import hexlet.code.app.dto.UserDto;
 import hexlet.code.app.entity.User;
 import hexlet.code.app.repository.UserRepository;
+import hexlet.code.app.service.UserAuthenticationService;
 import hexlet.code.app.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,7 +33,7 @@ public class UserController {
 
     private final UserService userService;
     private final UserRepository userRepository;
-//    private final UserAuthenticationService authenticationService;
+    private final UserAuthenticationService authenticationService;
 
     /**
      * @param dto UserDTO
@@ -44,10 +45,7 @@ public class UserController {
 //    @ResponseStatus(CREATED)
     public String registerNew(@RequestBody @Valid final UserDto dto) {
         userService.createNewUser(dto);
-//        return authenticationService.login(dto.getEmail(), dto.getPassword());
-
-        // TEMP, FOR DELETE ASAP TODO
-        return userRepository.findByEmail(dto.getEmail()).stream().toString();
+        return authenticationService.login(dto.getEmail(), dto.getPassword());
     }
 
     /**
@@ -72,6 +70,8 @@ public class UserController {
 //    @ApiResponses(@ApiResponse(responseCode = "200"))
     @GetMapping(ID)
     public User getUserById(@PathVariable final Long id) {
+        System.out.println("THIS IS ID : " + id);
+        System.out.println("HHHHHHEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEELLLLLLLLLLLLLLLLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
         return userRepository.findById(id).get();
     }
 

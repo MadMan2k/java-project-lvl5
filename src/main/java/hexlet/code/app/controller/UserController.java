@@ -43,9 +43,9 @@ public class UserController {
 //    @ApiResponse(responseCode = "201", description = "User created")
     @PostMapping
 //    @ResponseStatus(CREATED)
-    public String registerNew(@RequestBody @Valid final UserDto dto) {
-        userService.createNewUser(dto);
-        return authenticationService.login(dto.getEmail(), dto.getPassword());
+    public User registerNew(@RequestBody @Valid final UserDto dto) {
+//        return authenticationService.login(dto.getEmail(), dto.getPassword());
+        return userService.createNewUser(dto);
     }
 
     /**
@@ -70,8 +70,6 @@ public class UserController {
 //    @ApiResponses(@ApiResponse(responseCode = "200"))
     @GetMapping(ID)
     public User getUserById(@PathVariable final Long id) {
-        System.out.println("THIS IS ID : " + id);
-        System.out.println("HHHHHHEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEELLLLLLLLLLLLLLLLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
         return userRepository.findById(id).get();
     }
 

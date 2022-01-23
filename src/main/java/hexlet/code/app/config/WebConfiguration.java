@@ -12,10 +12,13 @@ public class WebConfiguration implements WebMvcConfigurer {
 
     private final String baseApiPath;
 
-    public WebConfiguration(@Value("${base-url}") String baseApiPath) {
-        this.baseApiPath = baseApiPath;
+    public WebConfiguration(@Value("${base-url}") String inputBaseApiPath) {
+        this.baseApiPath = inputBaseApiPath;
     }
 
+    /**
+     * @param registry
+     */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry

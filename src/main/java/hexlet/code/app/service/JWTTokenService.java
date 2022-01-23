@@ -20,17 +20,22 @@ public class JWTTokenService implements TokenService, Clock {
     private final String issuer;
     private final Long expirationSec;
     private final Long clockSkewSec;
+    private static final int SECONDS_TO_MILLISECONDS_MULTIPLIER = 1000;
 
-    public JWTTokenService(@Value("${jwt.issuer:prj_5}") final String issuer,
-                           @Value("${jwt.expiration-sec:86400}") final Long expirationSec,
-                           @Value("${jwt.clock-skew-sec:300}") final Long clockSkewSec,
+    public JWTTokenService(@Value("${jwt.issuer:prj_5}") final String inputIssuer,
+                           @Value("${jwt.expiration-sec:86400}") final Long inputExpirationSec,
+                           @Value("${jwt.clock-skew-sec:300}") final Long inputClockSkewSec,
                            @Value("${jwt.secret:secret}")final String secret) {
         this.secretKey = BASE64.encode(secret);
-        this.issuer = issuer;
-        this.expirationSec = expirationSec;
-        this.clockSkewSec = clockSkewSec;
+        this.issuer = inputIssuer;
+        this.expirationSec = inputExpirationSec;
+        this.clockSkewSec = inputClockSkewSec;
     }
 
+    /**
+     * @param attributes
+     * @return
+     */
     @Override
     public String expiring(Map<String, Object> attributes) {
         return Jwts.builder()
@@ -40,6 +45,10 @@ public class JWTTokenService implements TokenService, Clock {
                 .compact();
     }
 
+    /**
+     * @param token
+     * @return
+     */
     @Override
     public Map<String, Object> verify(String token) {
         return Jwts.parser()
@@ -51,6 +60,9 @@ public class JWTTokenService implements TokenService, Clock {
                 .getBody();
     }
 
+    /**
+     * @return
+     */
     @Override
     public Date now() {
         return new Date();
@@ -62,7 +74,8 @@ public class JWTTokenService implements TokenService, Clock {
         claims.setIssuedAt(now());
         claims.putAll(attributes);
         if (expiresInSec > 0) {
-            claims.setExpiration(new Date(System.currentTimeMillis() + expiresInSec * 1000));
+            claims.setExpiration(new Date(System.currentTimeMillis()
+                    + expiresInSec * SECONDS_TO_MILLISECONDS_MULTIPLIER));
         }
         return claims;
     }

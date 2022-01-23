@@ -25,7 +25,7 @@ import static org.springframework.http.HttpMethod.POST;
 
 @Configuration
 @EnableWebSecurity
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
@@ -41,8 +41,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final TokenAuthenticationProvider authenticationProvider;
 
     public SecurityConfig(@Value("${base-url}") final String baseUrl,
-                          @Lazy final TokenAuthenticationProvider authenticationProvider) {
-        this.authenticationProvider = authenticationProvider;
+                          @Lazy final TokenAuthenticationProvider inputAuthenticationProvider) {
+        this.authenticationProvider = inputAuthenticationProvider;
         this.publicUrls = new OrRequestMatcher(
                 new AntPathRequestMatcher(baseUrl + USER_CONTROLLER_PATH, POST.toString()),
                 new AntPathRequestMatcher(baseUrl + USER_CONTROLLER_PATH, GET.toString()),
@@ -52,11 +52,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         this.protectedUrls = new NegatedRequestMatcher(publicUrls);
     }
 
+    /**
+     * @param auth
+     * @throws Exception
+     */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authenticationProvider);
     }
 
+    /**
+     * @param http
+     * @throws Exception
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
@@ -74,6 +82,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout().disable();
     }
 
+    /**
+     * @return authenticationFilter
+     * @throws Exception
+     */
     @Bean
     public TokenAuthenticationFilter restAuthenticationFilter() throws Exception {
         final var authenticationFilter = new TokenAuthenticationFilter(protectedUrls);
@@ -82,6 +94,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return authenticationFilter;
     }
 
+    /**
+     * @return successHandler
+     */
     @Bean
     public SimpleUrlAuthenticationSuccessHandler successHandler() {
         final var successHandler = new SimpleUrlAuthenticationSuccessHandler();
@@ -91,7 +106,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return successHandler;
     }
 
-
+    /**
+     * @return BCryptPasswordEncoder
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

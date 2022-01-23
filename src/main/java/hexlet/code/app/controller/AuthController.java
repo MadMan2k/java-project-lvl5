@@ -19,6 +19,10 @@ public class AuthController {
 
     private final UserAuthenticationService authenticationService;
 
+    /**
+     * @param loginDto
+     * @return token
+     */
     @PostMapping
     public String login(@RequestBody final LoginDto loginDto) {
         return authenticationService.login(loginDto.getUsername(), loginDto.getPassword());

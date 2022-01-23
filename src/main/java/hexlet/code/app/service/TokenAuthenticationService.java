@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @AllArgsConstructor
 @Service
-public class TokenAuthenticationService implements UserAuthenticationService{
+public class TokenAuthenticationService implements UserAuthenticationService {
 
     private final TokenService tokenService;
 
@@ -20,6 +20,11 @@ public class TokenAuthenticationService implements UserAuthenticationService{
 
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * @param username
+     * @param password
+     * @return
+     */
     @Override
     public String login(String username, String password) {
         return userRepository.findByEmail(username)
@@ -28,6 +33,10 @@ public class TokenAuthenticationService implements UserAuthenticationService{
                 .orElseThrow(() -> new UsernameNotFoundException("invalid login and/or password"));
     }
 
+    /**
+     * @param token
+     * @return
+     */
     @Override
     public Optional<User> findByToken(String token) {
         return userRepository.findByEmail(tokenService.verify(token).get("username").toString());

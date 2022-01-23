@@ -24,9 +24,18 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
         super(requiresAuth);
     }
 
+    /**
+     * @param request
+     * @param response
+     * @return
+     * @throws AuthenticationException
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request,
-                                                HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
+                                                HttpServletResponse response)
+            throws AuthenticationException, IOException, ServletException {
         var authenticationToken = Optional.ofNullable(request.getHeader(AUTHORIZATION))
                 .map(auth -> auth.replaceFirst("^" + BEARER, ""))
                 .map(String::trim)
@@ -36,6 +45,14 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
         return getAuthenticationManager().authenticate(authenticationToken);
     }
 
+    /**
+     * @param request
+     * @param response
+     * @param chain
+     * @param authResult
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     protected void successfulAuthentication(HttpServletRequest request,
                                             HttpServletResponse response,

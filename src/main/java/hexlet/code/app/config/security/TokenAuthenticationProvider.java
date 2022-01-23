@@ -22,13 +22,23 @@ public class TokenAuthenticationProvider extends AbstractUserDetailsAuthenticati
 
 
     @Override
-    protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
-        // Empty
+    protected void additionalAuthenticationChecks(UserDetails userDetails,
+                                                  UsernamePasswordAuthenticationToken authentication)
+            throws AuthenticationException {
+        //Nothing to do here
 
     }
 
+    /**
+     * @param username
+     * @param authentication
+     * @return
+     * @throws AuthenticationException
+     */
     @Override
-    protected UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
+    protected UserDetails retrieveUser(String username,
+                                       UsernamePasswordAuthenticationToken authentication)
+            throws AuthenticationException {
         return authenticationService.findByToken(authentication.getCredentials().toString())
                 .map(this::buildUserDetails).orElse(null);
     }

@@ -14,12 +14,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
 
 import static hexlet.code.app.controller.UserController.USER_CONTROLLER_PATH;
+import static org.springframework.http.HttpStatus.CREATED;
 
 @AllArgsConstructor
 @RestController
@@ -43,7 +45,7 @@ public class UserController {
 //    @Operation(summary = "Create new user")
 //    @ApiResponse(responseCode = "201", description = "User created")
     @PostMapping
-//    @ResponseStatus(CREATED)
+    @ResponseStatus(CREATED)
     public User registerNew(@RequestBody @Valid final UserDto dto) {
 //        return authenticationService.login(dto.getEmail(), dto.getPassword());
         return userService.createNewUser(dto);

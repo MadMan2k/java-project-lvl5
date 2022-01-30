@@ -17,16 +17,16 @@ public class UserDto {
     private static final int PASS_MAX_LENGTH = 100;
 
     @NotBlank
+    @Email
+    private String email;
+
+    @NotBlank
     @Size(min = 1)
     private String firstName;
 
     @NotBlank
     @Size(min = 1)
     private String lastName;
-
-    @NotBlank
-    @Email
-    private String email;
 
     @NotBlank
     @Size(min = PASS_MIN_LENGTH, max = PASS_MAX_LENGTH)

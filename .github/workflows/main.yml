@@ -23,8 +23,8 @@ jobs:
       - run: ./cc-test-reporter before-build
       - run: make build
       - run: ./cc-test-reporter format-coverage build/reports/jacoco/test/jacocoTestReport.xml --input-type jacoco
-       env:
-         JACOCO_SOURCE_PATH: src/main/java
+        env:
+          JACOCO_SOURCE_PATH: src/main/java
       - run: ./cc-test-reporter upload-coverage
-       env:
-         CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_REPORTER_ID }}
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_REPORTER_ID }}

@@ -52,6 +52,9 @@ public class UserControllerTest {
     @Autowired
     private TestUtils utils;
 
+    /**
+     * remove all.
+     */
     @AfterEach
     public void clear() {
         utils.tearDown();

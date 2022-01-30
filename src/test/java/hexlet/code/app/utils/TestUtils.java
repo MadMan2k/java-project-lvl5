@@ -33,6 +33,9 @@ public class TestUtils {
             "pwd"
     );
 
+    /**
+     * @return UserDto
+     */
     public UserDto getTestRegistrationDto() {
         return testRegistrationDto;
     }
@@ -52,20 +55,36 @@ public class TestUtils {
     @Autowired
     private TokenService tokenService;
 
+    /**
+     * remove all.
+     */
     public void tearDown() {
 //        postCommentRepository.deleteAll();
 //        postRepository.deleteAll();
         userRepository.deleteAll();
     }
 
+    /**
+     * @param email
+     * @return User
+     */
     public User getUserByEmail(final String email) {
         return userRepository.findByEmail(email).get();
     }
 
+    /**
+     * @return ResultActions
+     * @throws Exception
+     */
     public ResultActions regDefaultUser() throws Exception {
         return regUser(testRegistrationDto);
     }
 
+    /**
+     * @param dto
+     * @return ResultActions
+     * @throws Exception
+     */
     public ResultActions regUser(final UserDto dto) throws Exception {
         final var request = post(USER_CONTROLLER_PATH)
                 .content(asJson(dto))
@@ -74,6 +93,12 @@ public class TestUtils {
         return perform(request);
     }
 
+    /**
+     * @param request
+     * @param byUser
+     * @return ResultActions
+     * @throws Exception
+     */
     public ResultActions perform(final MockHttpServletRequestBuilder request, final String byUser) throws Exception {
         final String token = tokenService.expiring(Map.of("username", byUser));
         request.header(AUTHORIZATION, token);
@@ -81,6 +106,11 @@ public class TestUtils {
         return perform(request);
     }
 
+    /**
+     * @param request
+     * @return ResultActions
+     * @throws Exception
+     */
     public ResultActions perform(final MockHttpServletRequestBuilder request) throws Exception {
         return mockMvc.perform(request);
     }

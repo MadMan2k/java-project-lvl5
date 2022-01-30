@@ -1,6 +1,6 @@
 package hexlet.code.app.service;
 
-import hexlet.code.app.dto.TaskStatusDTO;
+import hexlet.code.app.dto.TaskStatusDto;
 import hexlet.code.app.entity.TaskStatus;
 import hexlet.code.app.repository.TaskStatusRepository;
 import lombok.AllArgsConstructor;
@@ -19,7 +19,7 @@ public class TaskStatusServiceImpl implements TaskStatusService {
      * @return
      */
     @Override
-    public TaskStatus createNewTaskStatus(TaskStatusDTO taskStatusDTO) {
+    public TaskStatus createNewTaskStatus(TaskStatusDto taskStatusDTO) {
         final TaskStatus taskStatus = new TaskStatus();
 
         taskStatus.setName(taskStatusDTO.getName());
@@ -33,7 +33,7 @@ public class TaskStatusServiceImpl implements TaskStatusService {
      * @return
      */
     @Override
-    public TaskStatus updateTaskStatus(long id, TaskStatusDTO dto) {
+    public TaskStatus updateTaskStatus(long id, TaskStatusDto dto) {
 
         final TaskStatus taskStatusToUpdate = taskStatusRepository.findById(id).get();
         taskStatusToUpdate.setName(dto.getName());

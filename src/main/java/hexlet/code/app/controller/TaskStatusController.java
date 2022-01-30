@@ -1,6 +1,6 @@
 package hexlet.code.app.controller;
 
-import hexlet.code.app.dto.TaskStatusDTO;
+import hexlet.code.app.dto.TaskStatusDto;
 import hexlet.code.app.entity.TaskStatus;
 import hexlet.code.app.repository.TaskStatusRepository;
 import hexlet.code.app.service.TaskStatusService;
@@ -33,14 +33,14 @@ public class TaskStatusController {
     private final TaskStatusService taskStatusService;
 
     /**
-     * @param taskStatusDTO TaskStatusDTO
+     * @param taskStatusDTO TaskStatusDto
      * @return registered task status
      */
 //    @Operation(summary = "Create new user")
 //    @ApiResponse(responseCode = "201", description = "User created")
     @PostMapping
     @ResponseStatus(CREATED)
-    public TaskStatus createNewTaskStatus(@RequestBody @Valid final TaskStatusDTO taskStatusDTO) {
+    public TaskStatus createNewTaskStatus(@RequestBody @Valid final TaskStatusDto taskStatusDTO) {
 //        return authenticationService.login(dto.getEmail(), dto.getPassword());
         return taskStatusService.createNewTaskStatus(taskStatusDTO);
     }
@@ -76,7 +76,7 @@ public class TaskStatusController {
      * @return updated User
      */
     @PutMapping(ID)
-    public TaskStatus updateTaskStatus(@PathVariable final long id, @RequestBody @Valid final TaskStatusDTO dto) {
+    public TaskStatus updateTaskStatus(@PathVariable final long id, @RequestBody @Valid final TaskStatusDto dto) {
         return taskStatusService.updateTaskStatus(id, dto);
     }
 

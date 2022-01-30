@@ -4,6 +4,7 @@ import hexlet.code.app.dto.UserDto;
 import hexlet.code.app.entity.User;
 import hexlet.code.app.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,10 +52,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public String getCurrentUserName() {
-        // TEMP, FOR DELETE ASAP TODO
-        return null;
-
-//        return SecurityContextHolder.getContext().getAuthentication().getName();
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 
     /**

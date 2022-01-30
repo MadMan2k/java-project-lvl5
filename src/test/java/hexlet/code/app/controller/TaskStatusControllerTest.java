@@ -1,7 +1,7 @@
 package hexlet.code.app.controller;
 
 import hexlet.code.app.config.SpringConfigForIT;
-import hexlet.code.app.dto.TaskStatusDTO;
+import hexlet.code.app.dto.TaskStatusDto;
 import hexlet.code.app.repository.TaskStatusRepository;
 import hexlet.code.app.utils.TestUtils;
 import org.junit.jupiter.api.AfterEach;
@@ -51,8 +51,8 @@ public class TaskStatusControllerTest {
         utils.tearDown();
     }
 
-    private TaskStatusDTO buildStatusDto() {
-        return new TaskStatusDTO("testStatus");
+    private TaskStatusDto buildStatusDto() {
+        return new TaskStatusDto("testStatus");
     }
 
     @Test

@@ -26,4 +26,19 @@ public class TaskStatusServiceImpl implements TaskStatusService {
 
         return taskStatusRepository.save(taskStatus);
     }
+
+    /**
+     * @param id
+     * @param dto
+     * @return
+     */
+    @Override
+    public TaskStatus updateTaskStatus(long id, TaskStatusDTO dto) {
+
+        final TaskStatus taskStatusToUpdate = taskStatusRepository.findById(id).get();
+        taskStatusToUpdate.setName(dto.getName());
+
+        return taskStatusRepository.save(taskStatusToUpdate);
+
+    }
 }

@@ -5,4 +5,6 @@ import hexlet.code.app.entity.TaskStatus;
 
 public interface TaskStatusService {
     TaskStatus createNewTaskStatus(TaskStatusDTO taskStatusDTO);
+
+    TaskStatus updateTaskStatus(long id, TaskStatusDTO dto);
 }

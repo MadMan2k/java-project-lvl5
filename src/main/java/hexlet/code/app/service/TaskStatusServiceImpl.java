@@ -10,16 +10,17 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @AllArgsConstructor
-public class TaskStatusServiceImpl implements TaskStatusService{
+public class TaskStatusServiceImpl implements TaskStatusService {
 
     private final TaskStatusRepository taskStatusRepository;
 
+    /**
+     * @param taskStatusDTO
+     * @return
+     */
     @Override
     public TaskStatus createNewTaskStatus(TaskStatusDTO taskStatusDTO) {
         final TaskStatus taskStatus = new TaskStatus();
-
-        System.out.println("THIS IS TASK STATUS BEFORE SAVE : " + taskStatus);
-        System.out.println("THIS IS TASK STATUS DTO NAME : " + taskStatusDTO.getName());
 
         taskStatus.setName(taskStatusDTO.getName());
 

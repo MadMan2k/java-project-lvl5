@@ -1,9 +1,7 @@
 package hexlet.code.app.controller;
 
 import hexlet.code.app.dto.TaskStatusDTO;
-import hexlet.code.app.dto.UserDto;
 import hexlet.code.app.entity.TaskStatus;
-import hexlet.code.app.entity.User;
 import hexlet.code.app.repository.TaskStatusRepository;
 import hexlet.code.app.service.TaskStatusService;
 import lombok.AllArgsConstructor;

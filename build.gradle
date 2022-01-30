@@ -13,6 +13,8 @@ plugins {
 
 	// Сборщик фронтенда
 	id 'org.siouan.frontend-jdk11' version '6.0.0'
+
+	id 'jacoco'
 }
 
 group = 'hexlet.code'
@@ -76,6 +78,14 @@ compileJava {
 
 test {
 	useJUnitPlatform()
+	finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+	dependsOn test
+	reports {
+		xml.enabled true
+	}
 }
 
 // Настраиваем таску diffChangeLog таким образом,

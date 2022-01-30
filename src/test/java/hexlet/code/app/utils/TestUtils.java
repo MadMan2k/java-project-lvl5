@@ -7,6 +7,7 @@ import java.util.Map;
 
 import hexlet.code.app.dto.UserDto;
 import hexlet.code.app.entity.User;
+import hexlet.code.app.repository.TaskRepository;
 import hexlet.code.app.repository.TaskStatusRepository;
 import hexlet.code.app.repository.UserRepository;
 import hexlet.code.app.service.TokenService;
@@ -48,6 +49,9 @@ public class TestUtils {
     private UserRepository userRepository;
 
     @Autowired
+    private TaskRepository taskRepository;
+
+    @Autowired
     private TaskStatusRepository taskStatusRepository;
 
     @Autowired
@@ -57,6 +61,7 @@ public class TestUtils {
      * clear all changes.
      */
     public void tearDown() {
+        taskRepository.deleteAll();
         taskStatusRepository.deleteAll();
         userRepository.deleteAll();
     }

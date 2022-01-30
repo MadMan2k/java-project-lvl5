@@ -7,6 +7,7 @@ import java.util.Map;
 
 import hexlet.code.app.dto.UserDto;
 import hexlet.code.app.entity.User;
+import hexlet.code.app.repository.TaskStatusRepository;
 import hexlet.code.app.repository.UserRepository;
 import hexlet.code.app.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,21 +47,17 @@ public class TestUtils {
     @Autowired
     private UserRepository userRepository;
 
-//    @Autowired
-//    private PostCommentRepository postCommentRepository;
-
-//    @Autowired
-//    private PostRepository postRepository;
+    @Autowired
+    private TaskStatusRepository taskStatusRepository;
 
     @Autowired
     private TokenService tokenService;
 
     /**
-     * remove all.
+     * clear all changes.
      */
     public void tearDown() {
-//        postCommentRepository.deleteAll();
-//        postRepository.deleteAll();
+        taskStatusRepository.deleteAll();
         userRepository.deleteAll();
     }
 

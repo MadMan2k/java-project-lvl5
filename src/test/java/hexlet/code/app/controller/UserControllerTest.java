@@ -53,7 +53,7 @@ public class UserControllerTest {
     private TestUtils utils;
 
     /**
-     * remove all.
+     * clear all changes.
      */
     @AfterEach
     public void clear() {

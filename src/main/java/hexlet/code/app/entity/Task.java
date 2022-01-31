@@ -79,6 +79,9 @@ public class Task {
     )
     private List<Label> labels;
 
+    /**
+     * @param label
+     */
     public void addLabelToTask(Label label) {
         if (labels == null) {
             labels = new ArrayList<>();

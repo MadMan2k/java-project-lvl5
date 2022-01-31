@@ -10,9 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @AllArgsConstructor
-public class LabelServiceImpl implements LabelService{
+public class LabelServiceImpl implements LabelService {
     private final LabelRepository labelRepository;
 
+    /**
+     * @param dto
+     * @return
+     */
     @Override
     public Label createNewLabel(LabelDto dto) {
         final Label newLabel = fromDto(dto);
@@ -20,6 +24,11 @@ public class LabelServiceImpl implements LabelService{
         return labelRepository.save(newLabel);
     }
 
+    /**
+     * @param id
+     * @param dto
+     * @return
+     */
     @Override
     public Label updateLabel(long id, LabelDto dto) {
         final Label label = labelRepository.findById(id).get();

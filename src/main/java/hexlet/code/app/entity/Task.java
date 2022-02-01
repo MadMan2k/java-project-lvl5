@@ -71,6 +71,7 @@ public class Task {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
+    @ToString.Exclude
     @ManyToMany
     @JoinTable(
             name = "task_label",
@@ -78,6 +79,17 @@ public class Task {
             inverseJoinColumns = @JoinColumn(name = "label_id")
     )
     private List<Label> labels;
+
+    // Test labels Getter and Setter, remove after test TODO
+    public List<Label> getLabels() {
+        return labels;
+    }
+
+    public void setLabels(List<Label> labels) {
+        this.labels = labels;
+    }
+    // Test labels Getter and Setter, remove after test TODO
+
 
     /**
      * @param label

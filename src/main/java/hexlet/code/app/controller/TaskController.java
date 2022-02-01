@@ -1,5 +1,6 @@
 package hexlet.code.app.controller;
 
+import com.querydsl.core.types.Predicate;
 import hexlet.code.app.dto.TaskDto;
 import hexlet.code.app.entity.Task;
 import hexlet.code.app.repository.TaskRepository;
@@ -7,6 +8,7 @@ import hexlet.code.app.service.TaskService;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,8 +44,8 @@ public class TaskController {
      */
 //    @Operation(summary = "Get All posts")
     @GetMapping
-    public List<Task> getAll() {
-        return taskRepository.findAll();
+    public Iterable<Task> getAll(@QuerydslPredicate(root = Task.class) Predicate predicate) {
+        return taskRepository.findAll(predicate);
     }
 
     /**

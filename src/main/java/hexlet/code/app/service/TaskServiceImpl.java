@@ -1,14 +1,19 @@
 package hexlet.code.app.service;
 
 import hexlet.code.app.dto.TaskDto;
+import hexlet.code.app.entity.Label;
 import hexlet.code.app.entity.Task;
 import hexlet.code.app.entity.User;
+import hexlet.code.app.repository.LabelRepository;
 import hexlet.code.app.repository.TaskRepository;
 import hexlet.code.app.repository.TaskStatusRepository;
 import hexlet.code.app.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Iterator;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -19,6 +24,7 @@ public class TaskServiceImpl implements TaskService {
     private final UserService userService;
     private final UserRepository userRepository;
     private final TaskStatusRepository taskStatusRepository;
+    private final LabelRepository labelRepository;
 
     /**
      * @param taskDTO
@@ -27,7 +33,9 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Task createNewTask(TaskDto taskDTO) {
         final Task newTask = fromDto(taskDTO);
-
+        for (Label label : newTask.getLabels()) {
+            System.out.println("this is creation label id :" + label.getId());
+        }
         return taskRepository.save(newTask);
     }
 
@@ -48,10 +56,17 @@ public class TaskServiceImpl implements TaskService {
     private void merge(Task task, TaskDto taskDTO) {
         final Task newTask = fromDto(taskDTO);
 
+        for (Label label : newTask.getLabels()) {
+            System.out.println(label.getId());
+        }
+
+
         task.setName(newTask.getName());
         task.setDescription(newTask.getDescription());
         task.setExecutor(newTask.getExecutor());
         task.setTaskStatus(newTask.getTaskStatus());
+        task.setLabels(newTask.getLabels());
+
     }
 
     private Task fromDto(TaskDto taskDTO) {
@@ -63,6 +78,7 @@ public class TaskServiceImpl implements TaskService {
                 .author(author)
                 .executor(userRepository.findById(taskDTO.getExecutorId()).get())
                 .taskStatus(taskStatusRepository.findById(taskDTO.getTaskStatusId()).get())
+                .labels(labelRepository.findAllById(taskDTO.getLabels()).stream().collect(Collectors.toList()))
                 .build();
     }
 }

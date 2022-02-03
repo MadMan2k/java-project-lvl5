@@ -80,16 +80,19 @@ public class Task {
     )
     private List<Label> labels;
 
-    // Test labels Getter and Setter, remove after test TODO
+    /**
+     * @return labels
+     */
     public List<Label> getLabels() {
         return labels;
     }
 
-    public void setLabels(List<Label> labels) {
-        this.labels = labels;
+    /**
+     * @param newLabels
+     */
+    public void setLabels(List<Label> newLabels) {
+        this.labels = newLabels;
     }
-    // Test labels Getter and Setter, remove after test TODO
-
 
     /**
      * @param label

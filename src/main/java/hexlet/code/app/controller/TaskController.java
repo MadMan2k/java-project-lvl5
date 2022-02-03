@@ -5,7 +5,6 @@ import hexlet.code.app.dto.TaskDto;
 import hexlet.code.app.entity.Task;
 import hexlet.code.app.repository.TaskRepository;
 import hexlet.code.app.service.TaskService;
-import java.util.List;
 import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
@@ -40,7 +39,8 @@ public class TaskController {
     private final TaskService taskService;
 
     /**
-     * @return List of tasks
+     * @param predicate
+     * @return all tasks
      */
 //    @Operation(summary = "Get All posts")
     @GetMapping

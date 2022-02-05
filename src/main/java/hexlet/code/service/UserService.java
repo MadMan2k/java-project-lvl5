@@ -1,0 +1,11 @@
+package hexlet.code.service;
+
+import hexlet.code.dto.UserDto;
+import hexlet.code.entity.User;
+
+public interface UserService {
+    User createNewUser(UserDto userDto);
+    User updateUser(long id, UserDto userDto);
+    String getCurrentUserName();
+    User getCurrentUser();
+}

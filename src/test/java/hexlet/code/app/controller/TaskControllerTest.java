@@ -1,9 +1,12 @@
 package hexlet.code.app.controller;
 
 import hexlet.code.app.config.SpringConfigForIT;
+import hexlet.code.app.dto.LabelDto;
 import hexlet.code.app.dto.TaskDto;
 import hexlet.code.app.dto.TaskStatusDto;
+import hexlet.code.app.entity.Label;
 import hexlet.code.app.entity.TaskStatus;
+import hexlet.code.app.repository.LabelRepository;
 import hexlet.code.app.repository.TaskRepository;
 import hexlet.code.app.repository.TaskStatusRepository;
 import hexlet.code.app.repository.UserRepository;
@@ -17,6 +20,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.Arrays;
 
 import static hexlet.code.app.config.SpringConfigForIT.TEST_PROFILE;
 import static hexlet.code.app.controller.TaskController.TASK_CONTROLLER_PATH;
@@ -36,6 +41,7 @@ public class TaskControllerTest {
     private static final TaskStatusDto TASK_STATUS_DTO = new TaskStatusDto("test TaskStatus");
     private static final String NAME = "test name";
     private static final String DESCRIPTION = "test description";
+    private static final LabelDto LABEL_DTO = new LabelDto("test label");
 
     @Autowired
     private TaskRepository taskRepository;
@@ -45,6 +51,9 @@ public class TaskControllerTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private LabelRepository labelRepository;
 
     @Autowired
     private TestUtils utils;
@@ -68,9 +77,11 @@ public class TaskControllerTest {
     @Test
     public void  createTask() throws Exception {
         final long statusId = createNewStatus().getId();
-        final Long userId = userRepository.findByEmail(TEST_USERNAME).get().getId();
+        final long userId = userRepository.findByEmail(TEST_USERNAME).get().getId();
+        final long labelId = createNewLable().getId();
 
-        TaskDto taskDto = new TaskDto(NAME, DESCRIPTION, statusId, userId);
+
+        TaskDto taskDto = new TaskDto(NAME, DESCRIPTION, statusId, userId, Arrays.asList(labelId));
 
         final var request = post(TASK_CONTROLLER_PATH)
                 .content(asJson(taskDto))
@@ -82,6 +93,12 @@ public class TaskControllerTest {
 
         return taskStatusRepository.save(TaskStatus.builder()
                 .name(TASK_STATUS_DTO.getName())
+                .build());
+    }
+
+    private Label createNewLable() {
+        return labelRepository.save(Label.builder()
+                .name(LABEL_DTO.getName())
                 .build());
     }
 }

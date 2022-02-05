@@ -3,6 +3,7 @@ package hexlet.code.app.utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.Map;
 
 import hexlet.code.app.dto.UserDto;
@@ -65,10 +66,10 @@ public class TestUtils {
      * clear all changes.
      */
     public void tearDown() {
-        labelRepository.deleteAll();
         taskRepository.deleteAll();
         taskStatusRepository.deleteAll();
         userRepository.deleteAll();
+        labelRepository.deleteAll();
     }
 
     /**

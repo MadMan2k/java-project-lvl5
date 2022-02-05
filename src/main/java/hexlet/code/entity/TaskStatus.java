@@ -43,5 +43,4 @@ public class TaskStatus {
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
-
 }

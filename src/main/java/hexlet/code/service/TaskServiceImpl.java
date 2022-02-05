@@ -67,7 +67,7 @@ public class TaskServiceImpl implements TaskService {
                 .author(author)
                 .executor(userRepository.findById(taskDTO.getExecutorId()).get())
                 .taskStatus(taskStatusRepository.findById(taskDTO.getTaskStatusId()).get())
-                .labels(labelRepository.findAllById(taskDTO.getLabels()).stream().collect(Collectors.toList()))
+                .labels(labelRepository.findAllById(taskDTO.getLabelIds()).stream().collect(Collectors.toList()))
                 .build();
     }
 }

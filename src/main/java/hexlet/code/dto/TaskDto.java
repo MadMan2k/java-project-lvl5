@@ -26,5 +26,5 @@ public class TaskDto {
 
     private long executorId;
 
-    private List<Long> labels;
+    private List<Long> labelIds;
 }

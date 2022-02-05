@@ -6,6 +6,13 @@ import hexlet.code.app.entity.Task;
 import hexlet.code.app.repository.TaskRepository;
 import hexlet.code.app.service.TaskService;
 import javax.validation.Valid;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -39,12 +46,28 @@ public class TaskController {
     private final TaskService taskService;
 
     /**
+     * @param dto
+     * @return task
+     */
+    @Operation(summary = "Create new task")
+    @ApiResponse(responseCode = "201", description = "task created")
+    @PostMapping
+    @ResponseStatus(CREATED)
+    public Task createNewTask(@Parameter(description = "Task to save") @RequestBody @Valid final TaskDto dto) {
+        return taskService.createNewTask(dto);
+    }
+
+    /**
      * @param predicate
      * @return all tasks
      */
-//    @Operation(summary = "Get All posts")
+    @Operation(summary = "Get all tasks")
+    @ApiResponses(@ApiResponse(responseCode = "200", content =
+        @Content(schema = @Schema(implementation = Task.class))
+        ))
     @GetMapping
-    public Iterable<Task> getAll(@QuerydslPredicate(root = Task.class) Predicate predicate) {
+    public Iterable<Task> getAll(@Parameter(description = "Optional filtration of search")
+                                     @QuerydslPredicate(root = Task.class) Predicate predicate) {
         return taskRepository.findAll(predicate);
     }
 
@@ -52,26 +75,14 @@ public class TaskController {
      * @param id
      * @return task
      */
-//    @Operation(summary = "Get post by Id")
-//    @ApiResponses(value = {
-//            @ApiResponse(responseCode = "200", description = "post found"),
-//            @ApiResponse(responseCode = "404", description = "post with that id not found")
-//    })
+    @Operation(summary = "Get task by ID")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Task found"),
+        @ApiResponse(responseCode = "404", description = "Task with that id not found")
+    })
     @GetMapping(ID)
     public Task getById(@PathVariable final Long id) {
         return taskRepository.findById(id).get();
-    }
-
-    /**
-     * @param dto
-     * @return task
-     */
-//    @Operation(summary = "Create new post")
-//    @ApiResponse(responseCode = "201", description = "post created")
-    @PostMapping
-    @ResponseStatus(CREATED)
-    public Task createNewTask(@RequestBody @Valid final TaskDto dto) {
-        return taskService.createNewTask(dto);
     }
 
     /**
@@ -79,13 +90,12 @@ public class TaskController {
      * @param dto
      * @return task
      */
-//    @Operation(summary = "Update post")
-//    @ApiResponse(responseCode = "200", description = "post updated")
+    @Operation(summary = "Update existing task")
+    @ApiResponse(responseCode = "200", description = "Task updated")
     @PutMapping(ID)
     @PreAuthorize(ONLY_AUTHOR_BY_ID)
-    public Task updateTask(@PathVariable final Long id,
-//                           // Schema используется, чтобы указать тип данных для параметра
-//                           @Parameter(schema = @Schema(implementation = PostDto.class))
+    public Task updateTask(@Parameter(description = "Task for update id") @PathVariable final Long id,
+                           @Parameter(schema = @Schema(implementation = TaskDto.class))
                            @RequestBody @Valid  final TaskDto dto) {
         return taskService.updateTask(id, dto);
     }
@@ -93,14 +103,14 @@ public class TaskController {
     /**
      * @param id
      */
-//    @Operation(summary = "Delete post")
-//    @ApiResponses(value = {
-//            @ApiResponse(responseCode = "200", description = "post deleted"),
-//            @ApiResponse(responseCode = "404", description = "post with that id not found")
-//    })
+    @Operation(summary = "Delete task")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Task deleted"),
+        @ApiResponse(responseCode = "404", description = "Task with that id not found")
+    })
     @DeleteMapping(ID)
     @PreAuthorize(ONLY_AUTHOR_BY_ID)
-    public void deleteTask(@PathVariable final Long id) {
+    public void deleteTask(@Parameter(description = "Id of task to be deleted") @PathVariable final Long id) {
         taskRepository.deleteById(id);
     }
 }

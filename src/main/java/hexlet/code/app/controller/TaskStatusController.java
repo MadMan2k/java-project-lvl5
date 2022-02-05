@@ -4,6 +4,12 @@ import hexlet.code.app.dto.TaskStatusDto;
 import hexlet.code.app.entity.TaskStatus;
 import hexlet.code.app.repository.TaskStatusRepository;
 import hexlet.code.app.service.TaskStatusService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,23 +42,22 @@ public class TaskStatusController {
      * @param taskStatusDTO TaskStatusDto
      * @return registered task status
      */
-//    @Operation(summary = "Create new user")
-//    @ApiResponse(responseCode = "201", description = "User created")
+    @Operation(summary = "Create new TaskStatus")
+    @ApiResponse(responseCode = "201", description = "TaskStatus created")
     @PostMapping
     @ResponseStatus(CREATED)
-    public TaskStatus createNewTaskStatus(@RequestBody @Valid final TaskStatusDto taskStatusDTO) {
-//        return authenticationService.login(dto.getEmail(), dto.getPassword());
+    public TaskStatus createNewTaskStatus(@Parameter(description = "TaskStatus to save")
+                                              @RequestBody @Valid final TaskStatusDto taskStatusDTO) {
         return taskStatusService.createNewTaskStatus(taskStatusDTO);
     }
 
     /**
      * @return all task statuses
      */
-//    // Content используется для укзания содержимого ответа
-//    @ApiResponses(@ApiResponse(responseCode = "200", content =
-//            // Указываем тип содержимого ответа
-//    @Content(schema = @Schema(implementation = User.class))
-//    ))
+    @Operation(summary = "Get all TaskStatuses")
+    @ApiResponses(@ApiResponse(responseCode = "200", content =
+        @Content(schema = @Schema(implementation = TaskStatus.class))
+        ))
     @GetMapping
     public List<TaskStatus> getAllTaskStatuses() {
         return taskStatusRepository.findAll()
@@ -64,7 +69,11 @@ public class TaskStatusController {
      * @param id
      * @return TaskStatus by ID
      */
-//    @ApiResponses(@ApiResponse(responseCode = "200"))
+    @Operation(summary = "Get TaskStatus by ID")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "TaskStatus found"),
+        @ApiResponse(responseCode = "404", description = "TaskStatus with that id not found")
+    })
     @GetMapping(ID)
     public TaskStatus getTaskStatusById(@PathVariable final Long id) {
         return taskStatusRepository.findById(id).get();
@@ -75,16 +84,26 @@ public class TaskStatusController {
      * @param dto
      * @return updated User
      */
+    @Operation(summary = "Update existing TaskStatus")
+    @ApiResponse(responseCode = "200", description = "TaskStatus updated")
     @PutMapping(ID)
-    public TaskStatus updateTaskStatus(@PathVariable final long id, @RequestBody @Valid final TaskStatusDto dto) {
+    public TaskStatus updateTaskStatus(@Parameter(description = "TaskStatus for update id") @PathVariable final long id,
+                                       @Parameter(schema = @Schema(implementation = TaskStatusDto.class))
+                                       @RequestBody @Valid final TaskStatusDto dto) {
         return taskStatusService.updateTaskStatus(id, dto);
     }
 
     /**
      * @param id
      */
+    @Operation(summary = "Delete TaskStatus")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "TaskStatus deleted"),
+        @ApiResponse(responseCode = "404", description = "TaskStatus with that id not found")
+    })
     @DeleteMapping(ID)
-    public void deleteTaskStatus(@PathVariable final long id) {
+    public void deleteTaskStatus(@Parameter(description = "Id of TaskStatus to be deleted")
+                                     @PathVariable final long id) {
         taskStatusRepository.deleteById(id);
     }
 

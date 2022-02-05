@@ -110,7 +110,7 @@ public class UserController {
         @ApiResponse(responseCode = "404", description = "User with that id not found")
     })
     @DeleteMapping(ID)
-//    @PreAuthorize(ONLY_OWNER_BY_ID)
+    @PreAuthorize(ONLY_OWNER_BY_ID)
     public void delete(@Parameter(description = "Id of user to be deleted") @PathVariable final long id) {
         userRepository.deleteById(id);
     }

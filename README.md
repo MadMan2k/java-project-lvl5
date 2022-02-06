@@ -13,7 +13,7 @@
 
 Small Spring application for your team tasks management
 
-It's fully functional and ready to use. All back-end part is made by me as a part of project and a front-end part is provided by [Hexlet](https://ru.hexlet.io/)
+It's fully functional and ready to use. All back-end part is made by me as a part of project and a front-end part (only russian localization is present) is provided by [Hexlet](https://ru.hexlet.io/)
 
 Feel free if you want to use my application! It's all explicitly in the public domain (I have to formally say that). You can grab a copy of the files to use and tweak as fits you best or use it as it is.
 

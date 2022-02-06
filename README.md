@@ -13,8 +13,39 @@
 
 Small Spring application for your team tasks management
 
-This application is a part of my project at [Hexlet](https://ru.hexlet.io/). It's fully functional and ready to use. All back-end part is made by me and a front-end part is provided by [Hexlet](https://ru.hexlet.io/)
+It's fully functional and ready to use. All back-end part is made by me as a part of project and a front-end part is provided by [Hexlet](https://ru.hexlet.io/)
 
 Feel free if you want to use my application! It's all explicitly in the public domain (I have to formally say that). You can grab a copy of the files to use and tweak as fits you best or use it as it is.
 
 Check demo version on [Heroku](https://task3r-app.herokuapp.com/)
+
+[Swagger documentation](https://task3r-app.herokuapp.com/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config) is also integrated in project for more details and better understanding
+
+### How to use
+
+Mekefile is present, so to run application in developer mod : 
+
+```
+make start
+```
+or
+```
+./gradlew bootRun --args='--spring.profiles.active=dev'
+```
+
+To tun application in production mod :
+
+```
+make start-prod
+```
+or
+```
+./gradlew bootRun --args='--spring.profiles.active=prod'
+```
+
+Chack application running at
+```
+http://localhost:5000/
+```
+
+Enjoy!

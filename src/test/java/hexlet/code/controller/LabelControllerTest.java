@@ -14,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static hexlet.code.config.SpringConfigForIT.TEST_PROFILE;
 import static hexlet.code.controller.LabelController.LABEL_CONTROLLER_PATH;
@@ -21,7 +22,10 @@ import static hexlet.code.app.utils.TestUtils.TEST_USERNAME;
 import static hexlet.code.app.utils.TestUtils.asJson;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
@@ -46,6 +50,12 @@ public class LabelControllerTest {
     @BeforeEach
     public void before() throws Exception {
         utils.regDefaultUser();
+
+        var labelDto = buildLabelDto();
+        final var request = post(LABEL_CONTROLLER_PATH)
+                .content(asJson(labelDto))
+                .contentType(APPLICATION_JSON);
+        utils.perform(request, TEST_USERNAME);
     }
 
     /**
@@ -63,6 +73,56 @@ public class LabelControllerTest {
                 .content(asJson(labelDto))
                 .contentType(APPLICATION_JSON);
         utils.perform(request, TEST_USERNAME).andExpect(status().isCreated());
+    }
+
+    @Test
+    public void getLabelById() throws Exception {
+        long labelId = getLabelId();
+
+        final var request = get(LABEL_CONTROLLER_PATH + "/" + labelId);
+        utils.perform(request, TEST_USERNAME)
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(labelId))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("testLabel"));
+
+    }
+
+    @Test
+    public void getAllLabels() throws Exception {
+        final var request = get(LABEL_CONTROLLER_PATH);
+        utils.perform(request, TEST_USERNAME)
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[*].id").isNotEmpty());
+    }
+
+    @Test
+    public void editLabel() throws Exception {
+        long labelId = getLabelId();
+        var updatedLabelDto = new LabelDto("updatedLabel");
+
+        final var request = put(LABEL_CONTROLLER_PATH + "/" + labelId)
+                .content(asJson(updatedLabelDto))
+                .contentType(APPLICATION_JSON);
+
+        utils.perform(request, TEST_USERNAME)
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("updatedLabel"));
+    }
+
+    @Test
+    public void deleteLabel() throws Exception {
+        long labelId = getLabelId();
+
+        final var request = delete(LABEL_CONTROLLER_PATH + "/" + labelId);
+
+        utils.perform(request, TEST_USERNAME)
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$").doesNotExist());
+    }
+
+    private long getLabelId() {
+        return labelRepository.findAll().get(0).getId();
     }
 
     private LabelDto buildLabelDto() {

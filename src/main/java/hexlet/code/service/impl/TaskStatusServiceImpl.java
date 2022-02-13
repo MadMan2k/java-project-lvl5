@@ -1,8 +1,9 @@
-package hexlet.code.service;
+package hexlet.code.service.impl;
 
 import hexlet.code.dto.TaskStatusDto;
 import hexlet.code.entity.TaskStatus;
 import hexlet.code.repository.TaskStatusRepository;
+import hexlet.code.service.TaskStatusService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,7 +1,9 @@
-package hexlet.code.service;
+package hexlet.code.service.impl;
 
 import hexlet.code.entity.User;
 import hexlet.code.repository.UserRepository;
+import hexlet.code.service.TokenService;
+import hexlet.code.service.UserAuthenticationService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;

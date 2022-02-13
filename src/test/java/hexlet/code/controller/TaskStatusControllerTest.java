@@ -120,8 +120,6 @@ public class TaskStatusControllerTest {
         return taskStatusRepository.findAll().get(0).getId();
     }
 
-
-
     private TaskStatusDto buildTaskStatusDto() {
         return new TaskStatusDto("testStatus");
     }

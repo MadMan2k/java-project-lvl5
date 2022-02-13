@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static hexlet.code.config.SpringConfigForIT.TEST_PROFILE;
 import static hexlet.code.controller.TaskStatusController.TASK_STATUS_CONTROLLER_PATH;
@@ -20,7 +21,10 @@ import static hexlet.code.app.utils.TestUtils.TEST_USERNAME;
 import static hexlet.code.app.utils.TestUtils.asJson;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
@@ -41,6 +45,12 @@ public class TaskStatusControllerTest {
     @BeforeEach
     public void before() throws Exception {
         utils.regDefaultUser();
+
+        var statusDto = buildTaskStatusDto();
+        final var request = post(TASK_STATUS_CONTROLLER_PATH)
+                .content(asJson(statusDto))
+                .contentType(APPLICATION_JSON);
+        utils.perform(request, TEST_USERNAME);
     }
 
     /**
@@ -51,16 +61,68 @@ public class TaskStatusControllerTest {
         utils.tearDown();
     }
 
-    private TaskStatusDto buildStatusDto() {
-        return new TaskStatusDto("testStatus");
-    }
-
     @Test
     public void  createTaskStatus() throws Exception {
-        final var taskStatusDto = buildStatusDto();
+        final var taskStatusDto = buildTaskStatusDto();
         final var request = post(TASK_STATUS_CONTROLLER_PATH)
                 .content(asJson(taskStatusDto))
                 .contentType(APPLICATION_JSON);
         utils.perform(request, TEST_USERNAME).andExpect(status().isCreated());
+    }
+
+    @Test
+    public void getTaskStatusById() throws Exception {
+        long statusId = getTaskStatusId();
+
+        final var request = get(TASK_STATUS_CONTROLLER_PATH + "/" + statusId);
+        utils.perform(request, TEST_USERNAME)
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(statusId))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("testStatus"));
+
+    }
+
+    @Test
+    public void getAllTaskStatuses() throws Exception {
+        final var request = get(TASK_STATUS_CONTROLLER_PATH);
+        utils.perform(request, TEST_USERNAME)
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[*].id").isNotEmpty());
+    }
+
+    @Test
+    public void editLabel() throws Exception {
+        long statusId = getTaskStatusId();
+        var updatedTaskStatusDto = new TaskStatusDto("updatedStatus");
+
+        final var request = put(TASK_STATUS_CONTROLLER_PATH + "/" + statusId)
+                .content(asJson(updatedTaskStatusDto))
+                .contentType(APPLICATION_JSON);
+
+        utils.perform(request, TEST_USERNAME)
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("updatedStatus"));
+    }
+
+    @Test
+    public void deleteTaskStatus() throws Exception {
+        long statusId = getTaskStatusId();
+
+        final var request = delete(TASK_STATUS_CONTROLLER_PATH + "/" + statusId);
+
+        utils.perform(request, TEST_USERNAME)
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$").doesNotExist());
+    }
+
+    private long getTaskStatusId() {
+        return taskStatusRepository.findAll().get(0).getId();
+    }
+
+
+
+    private TaskStatusDto buildTaskStatusDto() {
+        return new TaskStatusDto("testStatus");
     }
 }
